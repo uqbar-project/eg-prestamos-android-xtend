@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Librex</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_main">Préstamos de libros</string>
+    <string name="books">Libros</string>
+    <string name="title_ver_libros">Libros</string>
+
+</resources>
