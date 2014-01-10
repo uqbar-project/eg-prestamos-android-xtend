@@ -17,28 +17,33 @@ import ar.edu.librex.persistence.HomeContactos
 import ar.edu.librex.persistence.MemoryBasedHomePrestamos
 import java.util.List
 
+import static extension ar.edu.librex.util.ImageUtil.*
+import ar.edu.librex.persistence.PhoneBasedContactos
+
 class MainActivity extends Activity {
 
 	override def onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState)
-
-		val homeContactos = new HomeContactos(this)
-		homeContactos.addContactoSiNoExiste(new Contacto("1", "46425829", "Paula Elffman", "disenia_dora@gmail.com", "kiarush.png"))
-		homeContactos.addContactoSiNoExiste(new Contacto("2", "45387743", "Sven Effinge", "capoxtend@yahoo.com.ar", "andrew.png"))
-		homeContactos.addContactoSiNoExiste(new Contacto("3", "47067261", "Andres Fermepin", "fermepincho@gmail.com", "agus.png"))
-		homeContactos.addContactoSiNoExiste(new Contacto("4", "46050144", "Scarlett Johansson", "rubiadiviiiina@hotmail.com", "scarlett.png"))
-		
-		//val ferme = new Contacto(null, null, "Andres Fermepin", null)
-		val ferme = new Contacto(null, "47067261", null, null, null)
-		val paulita = new Contacto(null, null, "Paula Elffman", null, null)
-		//val paulita = new Contacto(null, "46425829", null, null, null)
-		MemoryBasedHomePrestamos.instance.addPrestamo(new Prestamo(1, homeContactos.getContacto(ferme), new Libro("El Aleph", "J.L. Borges")))
-		MemoryBasedHomePrestamos.instance.addPrestamo(new Prestamo(2, homeContactos.getContacto(ferme), new Libro("La novela de Perón", "T.E. Martínez")))
-		MemoryBasedHomePrestamos
-		.instance.addPrestamo(new Prestamo(3, homeContactos.getContacto(paulita), new Libro("Cartas marcadas", "A. Dolina")))
-		
+		initialize()
 		setContentView(R.layout.activity_main)
 		this.llenarPrestamosPendientes()
+	}
+
+	/**
+	 * inicializamos la información de la aplicación
+	 */	
+	def initialize() {
+		val HomeContactos homeContactos = new PhoneBasedContactos(this)
+		homeContactos.addContactoSiNoExiste(new Contacto("1", "46425829", "Paula Elffman", "disenia_dora@gmail.com", this.convertToImage("kiarush.png")))
+		homeContactos.addContactoSiNoExiste(new Contacto("2", "45387743", "Sven Effinge", "capoxtend@yahoo.com.ar", this.convertToImage("andrew.png")))
+		homeContactos.addContactoSiNoExiste(new Contacto("3", "47067261", "Andres Fermepin", "fermepincho@gmail.com", this.convertToImage("agus.png")))
+		homeContactos.addContactoSiNoExiste(new Contacto("4", "46050144", "Scarlett Johansson", "rubiadiviiiina@hotmail.com", this.convertToImage("scarlett.png")))
+		
+		val ferme = new Contacto(null, "47067261", null, null, null)
+		val paulita = new Contacto(null, null, "Paula Elffman", null, null)
+		MemoryBasedHomePrestamos.instance.addPrestamo(new Prestamo(1, homeContactos.getContacto(ferme), new Libro("El Aleph", "J.L. Borges")))
+		MemoryBasedHomePrestamos.instance.addPrestamo(new Prestamo(2, homeContactos.getContacto(ferme), new Libro("La novela de Perón", "T.E. Martínez")))
+		MemoryBasedHomePrestamos.instance.addPrestamo(new Prestamo(3, homeContactos.getContacto(paulita), new Libro("Cartas marcadas", "A. Dolina")))
 	}
 	
 	override def onCreateOptionsMenu(Menu menu) {

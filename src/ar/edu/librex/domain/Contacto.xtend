@@ -6,7 +6,7 @@ class Contacto {
 	@Property String nombre
 	@Property String numero
 	@Property String email  
-	@Property String foto
+	@Property byte[] foto
 	
 	new() {
 		
@@ -16,7 +16,7 @@ class Contacto {
 		id = pId
 	}
 	
-	new(String pId, String pNumero, String pNombre, String pEMail, String pFoto) {
+	new(String pId, String pNumero, String pNombre, String pEMail, byte[] pFoto) {
 		id = pId
 		numero = pNumero
 		nombre = pNombre
