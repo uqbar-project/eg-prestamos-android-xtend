@@ -2,9 +2,11 @@ package ar.edu.paiu.ui
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
@@ -15,10 +17,10 @@ import ar.edu.librex.domain.Libro
 import ar.edu.librex.domain.Prestamo
 import ar.edu.librex.persistence.HomeContactos
 import ar.edu.librex.persistence.MemoryBasedHomePrestamos
+import ar.edu.librex.persistence.PhoneBasedContactos
 import java.util.List
 
 import static extension ar.edu.librex.util.ImageUtil.*
-import ar.edu.librex.persistence.PhoneBasedContactos
 
 class MainActivity extends Activity {
 
@@ -31,24 +33,45 @@ class MainActivity extends Activity {
 
 	/**
 	 * inicializamos la información de la aplicación
-	 */	
+	 */
 	def initialize() {
 		val HomeContactos homeContactos = new PhoneBasedContactos(this)
-		homeContactos.addContactoSiNoExiste(new Contacto("1", "46425829", "Paula Elffman", "disenia_dora@gmail.com", this.convertToImage("kiarush.png")))
-		homeContactos.addContactoSiNoExiste(new Contacto("2", "45387743", "Sven Effinge", "capoxtend@yahoo.com.ar", this.convertToImage("andrew.png")))
-		homeContactos.addContactoSiNoExiste(new Contacto("3", "47067261", "Andres Fermepin", "fermepincho@gmail.com", this.convertToImage("agus.png")))
-		homeContactos.addContactoSiNoExiste(new Contacto("4", "46050144", "Scarlett Johansson", "rubiadiviiiina@hotmail.com", this.convertToImage("scarlett.png")))
-		
+		homeContactos.addContactoSiNoExiste(
+			new Contacto("1", "46425829", "Paula Elffman", "disenia_dora@gmail.com", this.convertToImage("kiarush.png")))
+		homeContactos.addContactoSiNoExiste(
+			new Contacto("2", "45387743", "Sven Effinge", "capoxtend@yahoo.com.ar", this.convertToImage("andrew.png")))
+		homeContactos.addContactoSiNoExiste(
+			new Contacto("3", "47067261", "Andres Fermepin", "fermepincho@gmail.com", this.convertToImage("agus.png")))
+		homeContactos.addContactoSiNoExiste(
+			new Contacto("4", "46050144", "Scarlett Johansson", "rubiadiviiiina@hotmail.com",
+				this.convertToImage("scarlett.png")))
+
 		val ferme = new Contacto(null, "47067261", null, null, null)
 		val paulita = new Contacto(null, null, "Paula Elffman", null, null)
-		MemoryBasedHomePrestamos.instance.addPrestamo(new Prestamo(1, homeContactos.getContacto(ferme), new Libro("El Aleph", "J.L. Borges")))
-		MemoryBasedHomePrestamos.instance.addPrestamo(new Prestamo(2, homeContactos.getContacto(ferme), new Libro("La novela de Perón", "T.E. Martínez")))
-		MemoryBasedHomePrestamos.instance.addPrestamo(new Prestamo(3, homeContactos.getContacto(paulita), new Libro("Cartas marcadas", "A. Dolina")))
+		MemoryBasedHomePrestamos.instance.addPrestamo(
+			new Prestamo(1, homeContactos.getContacto(ferme), new Libro("El Aleph", "J.L. Borges")))
+		MemoryBasedHomePrestamos.instance.addPrestamo(
+			new Prestamo(2, homeContactos.getContacto(ferme), new Libro("La novela de Perón", "T.E. Martínez")))
+		MemoryBasedHomePrestamos.instance.addPrestamo(
+			new Prestamo(3, homeContactos.getContacto(paulita), new Libro("Cartas marcadas", "A. Dolina")))
 	}
-	
+
 	override def onCreateOptionsMenu(Menu menu) {
 		menuInflater.inflate(R.menu.main, menu)
 		true
+	}
+
+	override def onOptionsItemSelected(MenuItem item) {
+		switch (item.itemId) {
+			case R.id.action_books: navigate(typeof(LibroListActivity))
+		}
+		true
+	}
+
+	def void navigate(Class classActivity) {
+		val intent = new Intent(this, classActivity)
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+      	startActivity(intent)
 	}
 
 	def llenarPrestamosPendientes() {
@@ -56,41 +79,39 @@ class MainActivity extends Activity {
 		// val lv = findViewById(R.id.lvPrestamos) as ListView
 		// val arrayAdapter = new ArrayAdapter<Prestamo> (this, android.R.layout.simple_list_item_1, MemoryBasedHomePrestamos.instance.prestamosPendientes)
 		// lv.adapter = arrayAdapter
-		
 		// Segunda versión, dos columnas
 		val lv = findViewById(R.id.lvPrestamos) as ListView
 		val prestamoAdapter = new PrestamoAdapter(this, MemoryBasedHomePrestamos.instance.prestamosPendientes)
 		lv.adapter = prestamoAdapter
 	}
-	
+
 }
 
 class PrestamoAdapter extends BaseAdapter {
-	
+
 	Context context
 	List<Prestamo> prestamos
-	
+
 	new() {
-		
 	}
-	
+
 	new(Context pContext, List<Prestamo> pPrestamos) {
 		context = pContext
 		prestamos = pPrestamos
 	}
-	
+
 	override getCount() {
 		prestamos.size
 	}
-	
+
 	override getItem(int position) {
 		prestamos.get(position)
 	}
-	
+
 	override getItemId(int position) {
 		position
 	}
-	
+
 	override getView(int position, View convertView, ViewGroup parent) {
 		val Prestamo prestamo = getItem(position) as Prestamo
 		val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -101,5 +122,5 @@ class PrestamoAdapter extends BaseAdapter {
 		lblPrestamo.text = prestamo.datosPrestamo
 		row
 	}
-	
+
 }

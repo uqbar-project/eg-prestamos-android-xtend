@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="11"
         android:targetSdkVersion="19" />
 
     <!-- importante para acceder a los contactos -->
@@ -33,6 +33,27 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ar.edu.paiu.ui.MainActivity" />
+        </activity>
+<!--         <activity -->
+<!--             android:name="ar.edu.paiu.ui.BookActivity" -->
+<!--             android:label="@string/title_activity_book" > -->
+<!--             <intent-filter> -->
+<!--                 <action android:name="android.intent.action.MAIN" /> -->
+
+<!--                 <category android:name="android.intent.category.LAUNCHER" /> -->
+<!--             </intent-filter> -->
+<!--         </activity> -->
+        <activity
+            android:name="ar.edu.paiu.ui.LibroListActivity"
+            android:label="@string/title_libro_list" >
+        </activity>
+        <activity
+            android:name="ar.edu.paiu.ui.LibroDetailActivity"
+            android:label="@string/title_libro_detail"
+            android:parentActivityName=".LibroListActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".LibroListActivity" />
         </activity>
     </application>
 

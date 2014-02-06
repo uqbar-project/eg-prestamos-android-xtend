@@ -20,6 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLargeInverse"
+            android:padding="5dip"
             android:text="@string/title_main" />
     </TableRow>
 
