@@ -10,6 +10,8 @@
     <string name="title_activity_book">BookActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_libro_list">Libros</string>
-    <string name="title_libro_detail">Libro Detail</string>
-
+    <string name="title_libro_detail">Detalle del Libro</string>
+    <string name="title_libro_title">Titulo</string>
+	<string name="title_libro_author">Autor</string>
+	
 </resources>
