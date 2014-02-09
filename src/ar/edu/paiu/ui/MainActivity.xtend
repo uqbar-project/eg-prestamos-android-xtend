@@ -21,6 +21,7 @@ import ar.edu.librex.persistence.PhoneBasedContactos
 import java.util.List
 
 import static extension ar.edu.librex.util.ImageUtil.*
+import ar.edu.librex.persistence.MemoryBasedHomeLibros
 
 class MainActivity extends Activity {
 
@@ -46,14 +47,23 @@ class MainActivity extends Activity {
 			new Contacto("4", "46050144", "Scarlett Johansson", "rubiadiviiiina@hotmail.com",
 				this.convertToImage("scarlett.png")))
 
+		val elAleph = new Libro("El Aleph", "J.L. Borges")
+		val laNovelaDePeron = new Libro("La novela de Perón", "T.E. Martínez")
+		val cartasMarcadas = new Libro("Cartas marcadas", "A. Dolina")
+		MemoryBasedHomeLibros.instance.addLibro(elAleph)
+		MemoryBasedHomeLibros.instance.addLibro(laNovelaDePeron)
+		MemoryBasedHomeLibros.instance.addLibro(cartasMarcadas)
+		MemoryBasedHomeLibros.instance.addLibro(new Libro("Rayuela", "J. Cortázar"))
+		MemoryBasedHomeLibros.instance.addLibro(new Libro("No habrá más penas ni olvido", "O. Soriano"))
+		
 		val ferme = new Contacto(null, "47067261", null, null, null)
 		val paulita = new Contacto(null, null, "Paula Elffman", null, null)
 		MemoryBasedHomePrestamos.instance.addPrestamo(
-			new Prestamo(1, homeContactos.getContacto(ferme), new Libro("El Aleph", "J.L. Borges")))
+			new Prestamo(1, homeContactos.getContacto(ferme), elAleph))
 		MemoryBasedHomePrestamos.instance.addPrestamo(
-			new Prestamo(2, homeContactos.getContacto(ferme), new Libro("La novela de Perón", "T.E. Martínez")))
+			new Prestamo(2, homeContactos.getContacto(ferme), laNovelaDePeron))
 		MemoryBasedHomePrestamos.instance.addPrestamo(
-			new Prestamo(3, homeContactos.getContacto(paulita), new Libro("Cartas marcadas", "A. Dolina")))
+			new Prestamo(3, homeContactos.getContacto(paulita), cartasMarcadas))
 	}
 
 	override def onCreateOptionsMenu(Menu menu) {
