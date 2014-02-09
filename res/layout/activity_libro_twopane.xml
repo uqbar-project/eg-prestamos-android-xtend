@@ -23,7 +23,7 @@
 
     <fragment
         android:id="@+id/libro_list"
-        android:name="ar.edu.paiu.ui.LibroListFragment"
+        android:name="ar.edu.librex.ui.LibroListFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
