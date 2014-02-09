@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ar.edu.paiu.ui"
+    package="ar.edu.librex.ui"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -18,7 +18,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="ar.edu.paiu.ui.MainActivity"
+            android:name="ar.edu.librex.ui.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,15 +27,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="ar.edu.paiu.ui.VerLibrosActivity"
+            android:name="ar.edu.librex.ui.VerLibrosActivity"
             android:label="@string/title_ver_libros"
-            android:parentActivityName="ar.edu.paiu.ui.MainActivity" >
+            android:parentActivityName="ar.edu.librex.ui.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="ar.edu.paiu.ui.MainActivity" />
+                android:value="ar.edu.librex.ui.MainActivity" />
         </activity>
 <!--         <activity -->
-<!--             android:name="ar.edu.paiu.ui.BookActivity" -->
+<!--             android:name="ar.edu.librex.ui.BookActivity" -->
 <!--             android:label="@string/title_activity_book" > -->
 <!--             <intent-filter> -->
 <!--                 <action android:name="android.intent.action.MAIN" /> -->
@@ -44,11 +44,11 @@
 <!--             </intent-filter> -->
 <!--         </activity> -->
         <activity
-            android:name="ar.edu.paiu.ui.LibroListActivity"
+            android:name="ar.edu.librex.ui.LibroListActivity"
             android:label="@string/title_libro_list" >
         </activity>
         <activity
-            android:name="ar.edu.paiu.ui.LibroDetailActivity"
+            android:name="ar.edu.librex.ui.LibroDetailActivity"
             android:label="@string/title_libro_detail"
             android:parentActivityName=".LibroListActivity" >
             <meta-data
