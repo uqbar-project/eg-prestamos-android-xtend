@@ -1,10 +1,35 @@
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/libro_detail"
-    style="?android:attr/textAppearanceLarge"
+    android:id="@+id/libro_detail_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    android:textIsSelectable="true"
-    tools:context=".LibroDetailFragment" />
+    tools:context=".LibroDetailFragment"
+    tools:ignore="MergeRootFrame" >
 
+    <TableRow
+        android:id="@+id/tableRow1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:background="#000">
+	    <TextView
+	        android:id="@+id/txtTitulo"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:padding="5dip"
+	        android:textAppearance="?android:attr/textAppearanceLargeInverse" />
+	</TableRow>
+	
+    <TableRow
+        android:id="@+id/tableRow2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+	    
+    	<TextView
+        	android:id="@+id/txtAutor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dip"
+            />
+    </TableRow>
+    
+</TableLayout>
