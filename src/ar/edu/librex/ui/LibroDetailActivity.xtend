@@ -36,7 +36,10 @@ class LibroDetailActivity extends FragmentActivity {
 			// Create the detail fragment and add it to the activity
 			// using a fragment transaction.
 			val arguments = new Bundle
-			arguments.putString(LibroDetailFragment.ARG_ITEM_ID, getIntent().getStringExtra(LibroDetailFragment.ARG_ITEM_ID))
+			if (intent.getStringExtra(LibroDetailFragment.ARG_ITEM_ID) != null) {
+				arguments.putString(LibroDetailFragment.ARG_ITEM_ID, intent.getStringExtra(LibroDetailFragment.ARG_ITEM_ID))
+			}
+			arguments.putBoolean(LibroDetailFragment.EDITABLE, intent.getBooleanExtra(LibroDetailFragment.EDITABLE, false))
 			val fragment = new LibroDetailFragment
 			fragment.setArguments(arguments)
 			supportFragmentManager.beginTransaction().add(R.id.libro_detail_container, fragment).commit()
@@ -62,5 +65,5 @@ class LibroDetailActivity extends FragmentActivity {
 		NavUtils.navigateUpTo(this, new Intent(this, typeof(LibroListActivity)))
 		true
 	}
-	
+
 }

@@ -10,6 +10,7 @@ interface HomeLibros {
 	def Libro getLibro(Libro LibroOrigen)
 	def Libro getLibro(int posicion)
 	def void removeLibro(Libro libro)
+	def void removeLibro(int posicion)
 	def void eliminarLibros()
 	
 }

@@ -3,6 +3,9 @@ package ar.edu.librex.ui
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 
 /**
  * An activity representing a list of Libros. This activity has different
@@ -56,18 +59,54 @@ class LibroListActivity extends FragmentActivity implements Callbacks {
 			// In two-pane mode, show the detail view in this activity by
 			// adding or replacing the detail fragment using a
 			// fragment transaction.
-			val arguments = new Bundle
-			arguments.putString(LibroDetailFragment.ARG_ITEM_ID, id)
-			val fragment = new LibroDetailFragment
-			fragment.setArguments(arguments)
-			supportFragmentManager.beginTransaction().replace(R.id.libro_detail_container, fragment).commit()
+			detalleLibroTwoPanes(id, false)
 		} else {
 			// In single-pane mode, simply start the detail activity
 			// for the selected item ID.
-			val detailIntent = new Intent(this, typeof(LibroDetailActivity))
-			detailIntent.putExtra(LibroDetailFragment.ARG_ITEM_ID, id)
-			startActivity(detailIntent)
+			detalleLibroOnePane(id, false)
 		}
 	}
 
+	override def onCreateOptionsMenu(Menu menu) {
+		menuInflater.inflate(R.menu.menu_libros_list, menu)
+		true
+	}
+
+	override def onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.nuevoLibro: nuevoLibro()
+		}
+		true
+	}
+
+	def nuevoLibro() {
+		if(mTwoPane) {
+			detalleLibroTwoPanes(null, true)
+		} else {
+			detalleLibroOnePane(null, true)
+		}
+	}
+	
+	def detalleLibroTwoPanes(String id, boolean editable) {
+		Log.w("Librex", "Detalle libro twoPane")
+		val arguments = new Bundle
+		Log.w("Librex", "id " + id)
+		if(id != null) {
+			arguments.putString(LibroDetailFragment.ARG_ITEM_ID, id)
+		}
+		arguments.putBoolean(LibroDetailFragment.EDITABLE, editable)
+		val fragment = new LibroDetailFragment
+		fragment.setArguments(arguments)
+		supportFragmentManager.beginTransaction().replace(R.id.libro_detail_container, fragment).commit()
+	}
+
+	def detalleLibroOnePane(String id, boolean editable) {
+		val detailIntent = new Intent(this, typeof(LibroDetailActivity))
+		if (id != null) {
+			detailIntent.putExtra(LibroDetailFragment.ARG_ITEM_ID, id)
+		}
+		detailIntent.putExtra(LibroDetailFragment.EDITABLE, editable)
+		startActivity(detailIntent)
+	}
+	
 }

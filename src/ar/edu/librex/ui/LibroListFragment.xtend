@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter
 import android.widget.ListView
 import ar.edu.librex.domain.Libro
 import ar.edu.librex.persistence.MemoryBasedHomeLibros
+import android.util.Log
 
 /**
  * A list fragment representing a list of Libros. This fragment also supports
@@ -50,13 +51,23 @@ class LibroListFragment extends ListFragment {
 	 */
 	//	new() {
 	//	}
+	
+	ArrayAdapter adapterLibros
+	
 	override def onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState)
-
+			
+		Log.w("Librex", "onCreate de LibroListFragment")
 		// TODO: replace with a real list adapter.
 		//setListAdapter(new ArrayAdapter<DummyContent.DummyItem>(activity, R.layout.simple_list_item_activated_1, R.id.text1, DummyContent.ITEMS))
+		adapterLibros = new ArrayAdapter<Libro>(activity, R.layout.simple_list_item_activated_1, R.id.text1, MemoryBasedHomeLibros.instance.libros)
+		setListAdapter(adapterLibros)
+	}
 
-		setListAdapter(new ArrayAdapter<Libro>(activity, R.layout.simple_list_item_activated_1, R.id.text1, MemoryBasedHomeLibros.instance.libros))
+	override def onResume() {
+		Log.w("Librex", "onResume")
+		super.onResume()
+		adapterLibros.notifyDataSetChanged()
 	}
 
 	override def onViewCreated(View view, Bundle savedInstanceState) {
@@ -70,7 +81,8 @@ class LibroListFragment extends ListFragment {
 
 	override def onAttach(Activity activity) {
 		super.onAttach(activity)
-
+		Log.w("Librex", "onAttach de LibroListFragment")
+	
 		// Activities containing this fragment must implement its callbacks.
 		if(!(activity instanceof Callbacks)) {
 			throw new IllegalStateException("Activity must implement fragment's callbacks.")
@@ -88,10 +100,9 @@ class LibroListFragment extends ListFragment {
 
 	override def onListItemClick(ListView listView, View view, int position, long id) {
 		super.onListItemClick(listView, view, position, id)
-
+	
 		// Notify the active callbacks interface (the activity, if the
 		// fragment is attached to one) that an item has been selected.
-		// OJO, tuvimos que cambiarlo
 		mCallbacks.onItemSelected("" + position)
 	}
 

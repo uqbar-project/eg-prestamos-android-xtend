@@ -2,8 +2,11 @@
 <resources>
 
     <string name="app_name">Librex</string>
+    
     <string name="action_settings">Configuración</string>
     <string name="action_books">Libros</string>
+    <string name="action_ok">Guardar</string>
+    
     <string name="title_main">Préstamos de libros</string>
     <string name="books">Libros</string>
     <string name="title_ver_libros">Libros</string>
@@ -11,7 +14,9 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_libro_list">Libros</string>
     <string name="title_libro_detail">Detalle del Libro</string>
-    <string name="title_libro_title">Titulo</string>
+    <string name="title_libro_title">Título</string>
 	<string name="title_libro_author">Autor</string>
 	
+	<string name="nuevoLibro">Nuevo</string>
+			
 </resources>

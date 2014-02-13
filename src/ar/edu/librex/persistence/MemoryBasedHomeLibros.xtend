@@ -42,6 +42,10 @@ class MemoryBasedHomeLibros implements HomeLibros {
 		libros.remove(libro)
 	}
 
+	override removeLibro(int posicion) {
+		libros.remove(posicion)
+	}
+
 	override getLibros() {
 		libros
 	}	
@@ -49,5 +53,5 @@ class MemoryBasedHomeLibros implements HomeLibros {
 	override eliminarLibros() {
 		libros.clear
 	}
-	
+
 }
