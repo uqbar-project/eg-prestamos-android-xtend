@@ -6,7 +6,10 @@
     <string name="action_settings">Configuración</string>
     <string name="action_books">Libros</string>
     <string name="action_ok">Guardar</string>
-    
+    <!--  nuevo -->
+    <string name="action_call_contact">Contactar</string>
+	<!--  fin nuevo -->
+	
     <string name="title_main">Préstamos de libros</string>
     <string name="books">Libros</string>
     <string name="title_ver_libros">Libros</string>
@@ -16,7 +19,7 @@
     <string name="title_libro_detail">Detalle del Libro</string>
     <string name="title_libro_title">Título</string>
 	<string name="title_libro_author">Autor</string>
-	
+		
 	<string name="nuevoLibro">Nuevo</string>
 			
 </resources>

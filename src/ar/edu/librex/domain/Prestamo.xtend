@@ -34,4 +34,8 @@ class Prestamo {
 		new SimpleDateFormat("dd/MM/yyyy").format(fechaPrestamo) + " a " + contacto.toString
 	}
 	
+	def getTelefono() {
+		contacto.numero
+	}
+	
 }

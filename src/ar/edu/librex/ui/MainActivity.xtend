@@ -1,27 +1,24 @@
 package ar.edu.librex.ui
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
-import android.widget.BaseAdapter
+import android.widget.AdapterView
 import android.widget.ListView
-import android.widget.TextView
 import ar.edu.librex.domain.Contacto
 import ar.edu.librex.domain.Libro
 import ar.edu.librex.domain.Prestamo
 import ar.edu.librex.persistence.HomeContactos
+import ar.edu.librex.persistence.MemoryBasedHomeLibros
 import ar.edu.librex.persistence.MemoryBasedHomePrestamos
 import ar.edu.librex.persistence.PhoneBasedContactos
-import java.util.List
 
 import static extension ar.edu.librex.util.ImageUtil.*
-import ar.edu.librex.persistence.MemoryBasedHomeLibros
+import android.widget.AdapterView.OnItemLongClickListener
 
 class MainActivity extends Activity {
 
@@ -55,11 +52,10 @@ class MainActivity extends Activity {
 		MemoryBasedHomeLibros.instance.addLibro(cartasMarcadas)
 		MemoryBasedHomeLibros.instance.addLibro(new Libro("Rayuela", "J. Cortázar"))
 		MemoryBasedHomeLibros.instance.addLibro(new Libro("No habrá más penas ni olvido", "O. Soriano"))
-		
+
 		val ferme = new Contacto(null, "47067261", null, null, null)
 		val paulita = new Contacto(null, null, "Paula Elffman", null, null)
-		MemoryBasedHomePrestamos.instance.addPrestamo(
-			new Prestamo(1, homeContactos.getContacto(ferme), elAleph))
+		MemoryBasedHomePrestamos.instance.addPrestamo(new Prestamo(1, homeContactos.getContacto(ferme), elAleph))
 		MemoryBasedHomePrestamos.instance.addPrestamo(
 			new Prestamo(2, homeContactos.getContacto(ferme), laNovelaDePeron))
 		MemoryBasedHomePrestamos.instance.addPrestamo(
@@ -78,10 +74,11 @@ class MainActivity extends Activity {
 		true
 	}
 
+
 	def void navigate(Class classActivity) {
 		val intent = new Intent(this, classActivity)
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-      	startActivity(intent)
+		startActivity(intent)
 	}
 
 	def llenarPrestamosPendientes() {
@@ -93,44 +90,14 @@ class MainActivity extends Activity {
 		val lv = findViewById(R.id.lvPrestamos) as ListView
 		val prestamoAdapter = new PrestamoAdapter(this, MemoryBasedHomePrestamos.instance.prestamosPendientes)
 		lv.adapter = prestamoAdapter
-	}
-
-}
-
-class PrestamoAdapter extends BaseAdapter {
-
-	Context context
-	List<Prestamo> prestamos
-
-	new() {
-	}
-
-	new(Context pContext, List<Prestamo> pPrestamos) {
-		context = pContext
-		prestamos = pPrestamos
-	}
-
-	override getCount() {
-		prestamos.size
-	}
-
-	override getItem(int position) {
-		prestamos.get(position)
-	}
-
-	override getItemId(int position) {
-		position
-	}
-
-	override getView(int position, View convertView, ViewGroup parent) {
-		val Prestamo prestamo = getItem(position) as Prestamo
-		val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-		val row = inflater.inflate(R.layout.prestamo_row, parent, false) as View
-		val lblLibro = row.findViewById(R.id.txtLibro) as TextView
-		val lblPrestamo = row.findViewById(R.id.txtPrestamo) as TextView
-		lblLibro.text = prestamo.libro.toString
-		lblPrestamo.text = prestamo.datosPrestamo
-		row
+		lv.choiceMode = ListView.CHOICE_MODE_MULTIPLE_MODAL
+		lv.multiChoiceModeListener = new PrestamoModeListener(this)
+		registerForContextMenu(lv)
+//		lv.longClickable = true
+//		lv.onItemLongClickListener = [ AdapterView<?> adapter, View arg1, int position, long id | 
+//			Log.w("Librex", "Postion: " + position + " Id : " + id)
+//			true
+//		] as OnItemLongClickListener
 	}
 
 }
