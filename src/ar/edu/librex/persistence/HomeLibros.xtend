@@ -5,7 +5,8 @@ import java.util.List
 
 interface HomeLibros {
 
-	def void addLibro(Libro Libro) 
+	def void addLibro(Libro Libro)
+	def Libro addLibroSiNoExiste(Libro Libro) 
 	def List<Libro> getLibros()
 	def Libro getLibro(Libro LibroOrigen)
 	def Libro getLibro(int posicion)

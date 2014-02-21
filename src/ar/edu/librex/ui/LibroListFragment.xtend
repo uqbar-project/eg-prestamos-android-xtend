@@ -4,12 +4,14 @@ import android.R
 import android.app.Activity
 import android.os.Bundle
 import android.support.v4.app.ListFragment
+import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import ar.edu.librex.domain.Libro
-import ar.edu.librex.persistence.MemoryBasedHomeLibros
-import android.util.Log
+import java.util.List
+
+import static extension ar.edu.librex.config.LibrexConfig.*
 
 /**
  * A list fragment representing a list of Libros. This fragment also supports
@@ -45,31 +47,27 @@ class LibroListFragment extends ListFragment {
 	 */
 	private static val sDummyCallbacks = [ String param | ] as Callbacks 
 
-	/**
-	 * Mandatory empty constructor for the fragment manager to instantiate the
-	 * fragment (e.g. upon screen orientation changes).
-	 */
-	//	new() {
-	//	}
-	
-	ArrayAdapter adapterLibros
+	List<Long> idLibros
 	
 	override def onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState)
-			
-		Log.w("Librex", "onCreate de LibroListFragment")
-		// TODO: replace with a real list adapter.
-		//setListAdapter(new ArrayAdapter<DummyContent.DummyItem>(activity, R.layout.simple_list_item_activated_1, R.id.text1, DummyContent.ITEMS))
-		adapterLibros = new ArrayAdapter<Libro>(activity, R.layout.simple_list_item_activated_1, R.id.text1, MemoryBasedHomeLibros.instance.libros)
-		setListAdapter(adapterLibros)
+		refrescarLibros()
 	}
 
 	override def onResume() {
-		Log.w("Librex", "onResume")
 		super.onResume()
-		adapterLibros.notifyDataSetChanged()
+		// adapterLibros.notifyDataSetChanged()
+		refrescarLibros()
 	}
 
+	/** Método nuevo que creamos para compartir en el onCreate y en el onResume */
+	def void refrescarLibros() {
+		val libros = activity.homeLibros.libros
+		// colección paralela que guarda los ids
+		idLibros = libros.map [ libro | libro.id ]
+		listAdapter = new ArrayAdapter<Libro>(activity, R.layout.simple_list_item_activated_1, R.id.text1, libros)
+	}
+	
 	override def onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState)
 
@@ -103,7 +101,9 @@ class LibroListFragment extends ListFragment {
 	
 		// Notify the active callbacks interface (the activity, if the
 		// fragment is attached to one) that an item has been selected.
-		mCallbacks.onItemSelected("" + position)
+		val idLibro = idLibros.get(position)
+		Log.w("Librex", "el id:" + id + " y el selectedItem: " + idLibro)
+		mCallbacks.onItemSelected("" + idLibro)
 	}
 
 	override def onSaveInstanceState(Bundle outState) {

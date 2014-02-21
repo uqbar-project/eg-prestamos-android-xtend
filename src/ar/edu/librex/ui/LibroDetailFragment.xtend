@@ -2,13 +2,15 @@ package ar.edu.librex.ui
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import ar.edu.librex.domain.Libro
-import ar.edu.librex.persistence.MemoryBasedHomeLibros
+
+import static extension ar.edu.librex.config.LibrexConfig.*
 
 /**
  * A fragment representing a single Libro detail screen. This fragment is either
@@ -37,7 +39,8 @@ class LibroDetailFragment extends Fragment {
 		actualiza = arguments.containsKey(ARG_ITEM_ID) && arguments.getString(ARG_ITEM_ID) != null
 		if (actualiza) {
 			posicion = new Integer(arguments.getString(ARG_ITEM_ID)).intValue
-			libro = MemoryBasedHomeLibros.instance.getLibro(posicion)
+			Log.w("Librex", "Posicion: " + posicion)
+			libro = activity.homeLibros.getLibro(posicion)
 		} else {
 			libro = new Libro
 		}
@@ -76,7 +79,7 @@ class LibroDetailFragment extends Fragment {
 	def void guardar(View view) {
 		libro.titulo = txtTitulo.text.toString
 		libro.autor = txtAutor.text.toString
-		val homeLibros = MemoryBasedHomeLibros.instance
+		val homeLibros = activity.homeLibros
 		if (actualiza) {
 			homeLibros.removeLibro(posicion)
 		} 

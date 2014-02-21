@@ -37,5 +37,8 @@ class Prestamo {
 	def getTelefono() {
 		contacto.numero
 	}
-	
+
+	def getContactoMail() {
+		contacto.email
+	}	
 }

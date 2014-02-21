@@ -2,6 +2,7 @@ package ar.edu.librex.domain
 
 class Libro {
 	
+	@Property Long id
 	@Property String titulo
 	@Property String autor
 	

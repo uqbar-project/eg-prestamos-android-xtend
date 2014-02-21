@@ -2,26 +2,33 @@ package ar.edu.librex.ui
 
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.ActionMode
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
+import android.widget.AdapterView.OnItemLongClickListener
 import android.widget.ListView
 import ar.edu.librex.domain.Contacto
 import ar.edu.librex.domain.Libro
 import ar.edu.librex.domain.Prestamo
 import ar.edu.librex.persistence.HomeContactos
-import ar.edu.librex.persistence.MemoryBasedHomeLibros
 import ar.edu.librex.persistence.MemoryBasedHomePrestamos
 import ar.edu.librex.persistence.PhoneBasedContactos
-
+import java.net.URLEncoder
+import static extension ar.edu.librex.config.LibrexConfig.*
 import static extension ar.edu.librex.util.ImageUtil.*
-import android.widget.AdapterView.OnItemLongClickListener
+import ar.edu.librex.persistence.HomeLibros
 
-class MainActivity extends Activity {
+class MainActivity extends Activity implements ActionMode.Callback {
 
+	// nuevo
+	ActionMode mActionMode
+
+	// fin nuevo
 	override def onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState)
 		initialize()
@@ -44,14 +51,18 @@ class MainActivity extends Activity {
 			new Contacto("4", "46050144", "Scarlett Johansson", "rubiadiviiiina@hotmail.com",
 				this.convertToImage("scarlett.png")))
 
-		val elAleph = new Libro("El Aleph", "J.L. Borges")
-		val laNovelaDePeron = new Libro("La novela de Perón", "T.E. Martínez")
-		val cartasMarcadas = new Libro("Cartas marcadas", "A. Dolina")
-		MemoryBasedHomeLibros.instance.addLibro(elAleph)
-		MemoryBasedHomeLibros.instance.addLibro(laNovelaDePeron)
-		MemoryBasedHomeLibros.instance.addLibro(cartasMarcadas)
-		MemoryBasedHomeLibros.instance.addLibro(new Libro("Rayuela", "J. Cortázar"))
-		MemoryBasedHomeLibros.instance.addLibro(new Libro("No habrá más penas ni olvido", "O. Soriano"))
+		var elAleph = new Libro("El Aleph", "J.L. Borges")
+		var laNovelaDePeron = new Libro("La novela de Perón", "T.E. Martínez")
+		var cartasMarcadas = new Libro("Cartas marcadas", "A. Dolina")
+		
+		val HomeLibros homeDeLibros = this.homeLibros
+		// Cuando necesitemos generar una lista nueva de libros
+		// homeDeLibros.eliminarLibros()
+		elAleph = homeDeLibros.addLibroSiNoExiste(elAleph)
+		laNovelaDePeron = homeDeLibros.addLibroSiNoExiste(laNovelaDePeron)
+		cartasMarcadas = homeDeLibros.addLibroSiNoExiste(cartasMarcadas)
+		homeDeLibros.addLibroSiNoExiste(new Libro("Rayuela", "J. Cortázar"))
+		homeDeLibros.addLibroSiNoExiste(new Libro("No habrá más penas ni olvido", "O. Soriano"))
 
 		val ferme = new Contacto(null, "47067261", null, null, null)
 		val paulita = new Contacto(null, null, "Paula Elffman", null, null)
@@ -74,30 +85,74 @@ class MainActivity extends Activity {
 		true
 	}
 
-
-	def void navigate(Class classActivity) {
+	def void navigate(Class<?> classActivity) {
 		val intent = new Intent(this, classActivity)
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
 		startActivity(intent)
 	}
 
 	def llenarPrestamosPendientes() {
-		// Primera versión, listview con una sola columna
-		// val lv = findViewById(R.id.lvPrestamos) as ListView
-		// val arrayAdapter = new ArrayAdapter<Prestamo> (this, android.R.layout.simple_list_item_1, MemoryBasedHomePrestamos.instance.prestamosPendientes)
-		// lv.adapter = arrayAdapter
-		// Segunda versión, dos columnas
 		val lv = findViewById(R.id.lvPrestamos) as ListView
 		val prestamoAdapter = new PrestamoAdapter(this, MemoryBasedHomePrestamos.instance.prestamosPendientes)
 		lv.adapter = prestamoAdapter
-		lv.choiceMode = ListView.CHOICE_MODE_MULTIPLE_MODAL
-		lv.multiChoiceModeListener = new PrestamoModeListener(this)
+		lv.choiceMode = ListView.CHOICE_MODE_SINGLE
+
+		// lv.multiChoiceModeListener = new PrestamoModeListener(this)
+		lv.longClickable = true
+		lv.onItemLongClickListener = [ AdapterView<?> parent, View view, int position, long id |
+			if (mActionMode != null) {
+				return false
+			}
+			mActionMode = this.startActionMode(this)
+			mActionMode.tag = position
+			view.selected = true
+			true
+		] as OnItemLongClickListener
 		registerForContextMenu(lv)
-//		lv.longClickable = true
-//		lv.onItemLongClickListener = [ AdapterView<?> adapter, View arg1, int position, long id | 
-//			Log.w("Librex", "Postion: " + position + " Id : " + id)
-//			true
-//		] as OnItemLongClickListener
+	}
+
+	override def onCreateActionMode(ActionMode mode, Menu menu) {
+		Log.w("Librex", "onCreateActionMode")
+		mode.menuInflater.inflate(R.menu.prestamo_menu, menu)
+		true
+	}
+
+	override def onActionItemClicked(ActionMode mode, MenuItem item) {
+		val posicion = Integer.parseInt(mActionMode.tag.toString)
+		val prestamo = MemoryBasedHomePrestamos.instance.prestamosPendientes.get(posicion)
+		switch (item.itemId) {
+			case R.id.action_call_contact: llamar(prestamo.telefono)
+			case R.id.action_email_contact: enviarMail(prestamo)
+			default: return false
+		}
+		false
+	}
+
+	def boolean llamar(String telefono) {
+		val callIntent = new Intent(Intent.ACTION_CALL)
+		callIntent.setData(Uri.parse("tel:" + telefono))
+		startActivity(callIntent)
+		true
+	}
+
+	def boolean enviarMail(Prestamo prestamo) {
+		val uriText = "mailto:" + prestamo.contactoMail +
+                 "?subject=" + URLEncoder.encode("Libro " + prestamo.libro.titulo) + 
+                 "&body=" + URLEncoder.encode("Por favor te pido que me devuelvas el libro")
+		val uri = Uri.parse(uriText)
+		val sendIntent = new Intent(Intent.ACTION_SENDTO)
+		sendIntent.setData(uri)
+		startActivity(Intent.createChooser(intent, "Enviar mail"))
+		true
+	}
+
+	override def onPrepareActionMode(ActionMode mode, Menu menu) {
+		Log.w("Librex", "onPrepareActionMode")
+		false
+	}
+
+	override def onDestroyActionMode(ActionMode mode) {
+		mActionMode = null
 	}
 
 }

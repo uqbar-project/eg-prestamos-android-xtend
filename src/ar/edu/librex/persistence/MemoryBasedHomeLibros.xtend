@@ -26,6 +26,14 @@ class MemoryBasedHomeLibros implements HomeLibros {
 		libros = new ArrayList<Libro>
 	}
 
+	override addLibroSiNoExiste(Libro libro) {
+		if (this.getLibro(libro) == null) {
+			this.addLibro(libro)
+			libro.id = new Long(libros.size - 1)
+		}	
+		libro
+	}
+	
 	override getLibro(int posicion) {
 		libros.get(posicion)
 	}
