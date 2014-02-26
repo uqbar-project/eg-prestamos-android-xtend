@@ -7,9 +7,7 @@ import android.view.ActionMode
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.AbsListView.MultiChoiceModeListener
-import android.widget.ListView
 import ar.edu.librex.persistence.MemoryBasedHomePrestamos
-import android.util.Log
 
 class PrestamoModeListener implements MultiChoiceModeListener {
 

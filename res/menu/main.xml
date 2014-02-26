@@ -3,13 +3,19 @@
     <item
         android:id="@+id/action_books"
         android:icon="@drawable/ic_action_paste"
-        android:showAsAction="always"
         android:orderInCategory="100"
+        android:showAsAction="always"
         android:title="@string/action_books"/>
     
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_nuevo_prestamo"
         android:orderInCategory="200"
+        android:showAsAction="always"
+        android:title="@string/action_nuevo_prestamo"/>
+    
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="300"
         android:showAsAction="never"
         android:title="@string/action_settings"/>
 

@@ -10,6 +10,7 @@ interface HomeLibros {
 	def List<Libro> getLibros()
 	def Libro getLibro(Libro LibroOrigen)
 	def Libro getLibro(int posicion)
+	def List<Libro> getLibrosPrestables()
 	def void removeLibro(Libro libro)
 	def void removeLibro(int posicion)
 	def void eliminarLibros()

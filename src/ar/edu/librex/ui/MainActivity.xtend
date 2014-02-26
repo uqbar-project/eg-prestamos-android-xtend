@@ -16,12 +16,12 @@ import ar.edu.librex.domain.Contacto
 import ar.edu.librex.domain.Libro
 import ar.edu.librex.domain.Prestamo
 import ar.edu.librex.persistence.HomeContactos
-import ar.edu.librex.persistence.MemoryBasedHomePrestamos
+import ar.edu.librex.persistence.HomeLibros
 import ar.edu.librex.persistence.PhoneBasedContactos
 import java.net.URLEncoder
+
 import static extension ar.edu.librex.config.LibrexConfig.*
 import static extension ar.edu.librex.util.ImageUtil.*
-import ar.edu.librex.persistence.HomeLibros
 
 class MainActivity extends Activity implements ActionMode.Callback {
 
@@ -33,6 +33,11 @@ class MainActivity extends Activity implements ActionMode.Callback {
 		super.onCreate(savedInstanceState)
 		initialize()
 		setContentView(R.layout.activity_main)
+		this.llenarPrestamosPendientes()
+	}
+
+	override def onResume() {
+		super.onResume()
 		this.llenarPrestamosPendientes()
 	}
 
@@ -52,10 +57,14 @@ class MainActivity extends Activity implements ActionMode.Callback {
 				this.convertToImage("scarlett.png")))
 
 		var elAleph = new Libro("El Aleph", "J.L. Borges")
+		elAleph.prestar()
 		var laNovelaDePeron = new Libro("La novela de Perón", "T.E. Martínez")
+		laNovelaDePeron.prestar() 
 		var cartasMarcadas = new Libro("Cartas marcadas", "A. Dolina")
-		
+		cartasMarcadas.prestar()
+
 		val HomeLibros homeDeLibros = this.homeLibros
+
 		// Cuando necesitemos generar una lista nueva de libros
 		// homeDeLibros.eliminarLibros()
 		elAleph = homeDeLibros.addLibroSiNoExiste(elAleph)
@@ -63,14 +72,22 @@ class MainActivity extends Activity implements ActionMode.Callback {
 		cartasMarcadas = homeDeLibros.addLibroSiNoExiste(cartasMarcadas)
 		homeDeLibros.addLibroSiNoExiste(new Libro("Rayuela", "J. Cortázar"))
 		homeDeLibros.addLibroSiNoExiste(new Libro("No habrá más penas ni olvido", "O. Soriano"))
+		homeDeLibros.addLibroSiNoExiste(new Libro("No habrá más penas ni olvido", "O. Soriano"))
+		homeDeLibros.addLibroSiNoExiste(new Libro("Cuentos de los años felices", "O. Soriano"))
+		homeDeLibros.addLibroSiNoExiste(new Libro("Una sombra ya pronto serás", "O. Soriano"))
+		homeDeLibros.addLibroSiNoExiste(new Libro("Octaedro", "J. Cortázar"))
+		homeDeLibros.addLibroSiNoExiste(new Libro("Ficciones", "J.L. Borges"))
 
 		val ferme = new Contacto(null, "47067261", null, null, null)
 		val paulita = new Contacto(null, null, "Paula Elffman", null, null)
-		MemoryBasedHomePrestamos.instance.addPrestamo(new Prestamo(1, homeContactos.getContacto(ferme), elAleph))
-		MemoryBasedHomePrestamos.instance.addPrestamo(
-			new Prestamo(2, homeContactos.getContacto(ferme), laNovelaDePeron))
-		MemoryBasedHomePrestamos.instance.addPrestamo(
-			new Prestamo(3, homeContactos.getContacto(paulita), cartasMarcadas))
+
+		val homePrestamos = this.homePrestamos
+		if (homePrestamos.prestamosPendientes.isEmpty) {
+			Log.w("Librex", "Creando préstamos")
+			homePrestamos.addPrestamo(new Prestamo(1, homeContactos.getContacto(ferme), elAleph))
+			homePrestamos.addPrestamo(new Prestamo(2, homeContactos.getContacto(ferme), laNovelaDePeron))
+			homePrestamos.addPrestamo(new Prestamo(3, homeContactos.getContacto(paulita), cartasMarcadas))
+		} 
 	}
 
 	override def onCreateOptionsMenu(Menu menu) {
@@ -81,6 +98,7 @@ class MainActivity extends Activity implements ActionMode.Callback {
 	override def onOptionsItemSelected(MenuItem item) {
 		switch (item.itemId) {
 			case R.id.action_books: navigate(typeof(LibroListActivity))
+			case R.id.action_nuevo_prestamo: navigate(typeof(NuevoPrestamo))
 		}
 		true
 	}
@@ -93,7 +111,7 @@ class MainActivity extends Activity implements ActionMode.Callback {
 
 	def llenarPrestamosPendientes() {
 		val lv = findViewById(R.id.lvPrestamos) as ListView
-		val prestamoAdapter = new PrestamoAdapter(this, MemoryBasedHomePrestamos.instance.prestamosPendientes)
+		val prestamoAdapter = new PrestamoAdapter(this, homePrestamos.prestamosPendientes)
 		lv.adapter = prestamoAdapter
 		lv.choiceMode = ListView.CHOICE_MODE_SINGLE
 
@@ -112,14 +130,13 @@ class MainActivity extends Activity implements ActionMode.Callback {
 	}
 
 	override def onCreateActionMode(ActionMode mode, Menu menu) {
-		Log.w("Librex", "onCreateActionMode")
 		mode.menuInflater.inflate(R.menu.prestamo_menu, menu)
 		true
 	}
 
 	override def onActionItemClicked(ActionMode mode, MenuItem item) {
 		val posicion = Integer.parseInt(mActionMode.tag.toString)
-		val prestamo = MemoryBasedHomePrestamos.instance.prestamosPendientes.get(posicion)
+		val prestamo = homePrestamos.prestamosPendientes.get(posicion)
 		switch (item.itemId) {
 			case R.id.action_call_contact: llamar(prestamo.telefono)
 			case R.id.action_email_contact: enviarMail(prestamo)
@@ -136,9 +153,9 @@ class MainActivity extends Activity implements ActionMode.Callback {
 	}
 
 	def boolean enviarMail(Prestamo prestamo) {
-		val uriText = "mailto:" + prestamo.contactoMail +
-                 "?subject=" + URLEncoder.encode("Libro " + prestamo.libro.titulo) + 
-                 "&body=" + URLEncoder.encode("Por favor te pido que me devuelvas el libro")
+		val uriText = "mailto:" + prestamo.contactoMail + "?subject=" +
+			URLEncoder.encode("Libro " + prestamo.libro.titulo) + "&body=" +
+			URLEncoder.encode("Por favor te pido que me devuelvas el libro")
 		val uri = Uri.parse(uriText)
 		val sendIntent = new Intent(Intent.ACTION_SENDTO)
 		sendIntent.setData(uri)
@@ -147,7 +164,6 @@ class MainActivity extends Activity implements ActionMode.Callback {
 	}
 
 	override def onPrepareActionMode(ActionMode mode, Menu menu) {
-		Log.w("Librex", "onPrepareActionMode")
 		false
 	}
 

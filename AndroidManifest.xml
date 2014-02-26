@@ -11,7 +11,6 @@
     <!-- importante para acceder a los contactos -->
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
-    
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
@@ -36,15 +35,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ar.edu.librex.ui.MainActivity" />
         </activity>
-<!--         <activity -->
-<!--             android:name="ar.edu.librex.ui.BookActivity" -->
-<!--             android:label="@string/title_activity_book" > -->
-<!--             <intent-filter> -->
-<!--                 <action android:name="android.intent.action.MAIN" /> -->
+        <!-- <activity -->
+        <!-- android:name="ar.edu.librex.ui.BookActivity" -->
+        <!-- android:label="@string/title_activity_book" > -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.intent.action.MAIN" /> -->
 
-<!--                 <category android:name="android.intent.category.LAUNCHER" /> -->
-<!--             </intent-filter> -->
-<!--         </activity> -->
+
+        <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+        <!-- </intent-filter> -->
+        <!-- </activity> -->
         <activity
             android:name="ar.edu.librex.ui.LibroListActivity"
             android:label="@string/title_libro_list" >
@@ -56,6 +56,10 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".LibroListActivity" />
+        </activity>
+        <activity
+            android:name="ar.edu.librex.ui.NuevoPrestamo"
+            android:label="@string/title_activity_nuevo_prestamo" >
         </activity>
     </application>
 

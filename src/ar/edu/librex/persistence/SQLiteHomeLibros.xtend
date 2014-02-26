@@ -2,12 +2,14 @@ package ar.edu.librex.persistence
 
 import android.app.Activity
 import android.content.ContentValues
-import ar.edu.librex.domain.Libro
-import java.util.ArrayList
 import android.database.Cursor
 import android.util.Log
+import ar.edu.librex.domain.Libro
+import java.util.ArrayList
 
 class SQLiteHomeLibros implements HomeLibros {
+
+	private String[] CAMPOS_LIBRO = #["titulo, autor, prestado, id"]
 
 	LibrexSQLLiteHelper db
 
@@ -18,9 +20,14 @@ class SQLiteHomeLibros implements HomeLibros {
 	override addLibro(Libro libro) {
 		val con = db.writableDatabase
 
+		var prestado = 0
+		if (libro.estaPrestado) {
+			prestado = 1
+		}
 		val values = new ContentValues
 		values.put("titulo", libro.titulo)
 		values.put("autor", libro.autor)
+		values.put("prestado", prestado)
 
 		con.insert("Libros", null, values)
 		con.close
@@ -31,7 +38,7 @@ class SQLiteHomeLibros implements HomeLibros {
 		val result = new ArrayList<Libro>
 		val con = db.readableDatabase
 
-		val curLibros = con.query("Libros", #["titulo, autor, id"], null, null, null, null, null)
+		val curLibros = con.query("Libros", CAMPOS_LIBRO, null, null, null, null, null)
 		while (curLibros.moveToNext) {
 			result.add(crearLibro(curLibros))
 		}
@@ -42,7 +49,10 @@ class SQLiteHomeLibros implements HomeLibros {
 
 	def Libro crearLibro(Cursor cursor) {
 		val libro = new Libro(cursor.getString(0), cursor.getString(1))
-		libro.id = cursor.getLong(2)  
+		libro.id = cursor.getLong(3)
+		if (cursor.getInt(2) == 1) {
+			libro.prestar()  
+		}
 		Log.w("Librex", "genero un libro en memoria | id: " + libro.id + " | libro: " + libro)
 		libro
 	}
@@ -50,7 +60,7 @@ class SQLiteHomeLibros implements HomeLibros {
 	override getLibro(Libro libroOrigen) {
 		val con = db.readableDatabase
 		try {
-			val curLibros = con.query("Libros", #["titulo, autor, id"], "titulo = ? ", #[libroOrigen.titulo], null, null, null)
+			val curLibros = con.query("Libros", CAMPOS_LIBRO, "titulo = ? ", #[libroOrigen.titulo], null, null, null)
 			curLibros.moveToFirst
 			if (curLibros.afterLast) {
 				null
@@ -65,7 +75,7 @@ class SQLiteHomeLibros implements HomeLibros {
 	override getLibro(int posicion) {
 		val con = db.readableDatabase
 		try {
-			val curLibros = con.query("Libros", #["titulo, autor, id"], "id = ? ", #["" + posicion], null, null, null)
+			val curLibros = con.query("Libros", CAMPOS_LIBRO, "id = ? ", #["" + posicion], null, null, null)
 			curLibros.moveToFirst
 			if (curLibros.afterLast) {
 				null
@@ -99,7 +109,7 @@ class SQLiteHomeLibros implements HomeLibros {
 		var result = this.getLibro(libro)
 		if (result == null) {
 			this.addLibro(libro)
-			result = libro
+			result = this.getLibro(libro)
 		}	
 		result
 	}
@@ -111,6 +121,10 @@ class SQLiteHomeLibros implements HomeLibros {
 		} finally {
 			con.close
 		}
+	}
+
+	override getLibrosPrestables() {
+		libros.filter [ libro | libro.estaDisponible ].toList
 	}
 
 }

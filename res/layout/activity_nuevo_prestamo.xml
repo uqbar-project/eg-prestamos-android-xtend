@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".NuevoPrestamo" >
+
+    <AutoCompleteTextView
+        android:id="@+id/txtLibroTituloAutocomplete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:ems="20"
+        android:hint="@string/libro_titulo_hint"
+        android:textAppearance="?android:attr/textAppearanceMedium" >
+
+        <requestFocus />
+    </AutoCompleteTextView>
+
+    <LinearLayout
+        android:id="@+id/linContacto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="5dip"
+        android:paddingBottom="5dip"
+        android:orientation="horizontal"
+        android:gravity="bottom">
+
+        <ImageView
+            android:id="@+id/imgContactoAPrestar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+            />
+
+        <TextView
+            android:id="@+id/txtContacto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title_txtContacto"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <ImageButton
+            android:id="@+id/btnBuscar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="buscarContacto"
+            android:src="@drawable/ic_action_search" />
+        
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnPrestar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="prestar"
+        android:text="@string/action_prestar" />
+    
+</LinearLayout>

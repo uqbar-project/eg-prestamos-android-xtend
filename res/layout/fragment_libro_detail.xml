@@ -8,7 +8,7 @@
 
     <TableRow
         android:id="@+id/tableRow1"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="#000" >
 
@@ -17,30 +17,30 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="5dip"
+            
             android:text="@string/title_libro_title"
             android:textAppearance="?android:attr/textAppearanceSmallInverse" />
     </TableRow>
 
     <TableRow 
 		android:id="@+id/tableRow2"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="#000" >
         
         <EditText
             android:id="@+id/txtTitulo"
-            android:layout_width="50dip"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="textCapWords"
-            android:maxLength="30"
-            android:padding="5dip"
-            android:textAppearance="?android:attr/textAppearanceLargeInverse"
+            android:maxLength="100"
+            android:textAppearance="?android:attr/textAppearanceMediumInverse"
             android:textColor="#C0C0C0" />
     </TableRow>
 
     <TableRow
         android:id="@+id/tableRow3"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
 
         <TextView
@@ -55,15 +55,16 @@
 
     <TableRow
         android:id="@+id/tableRow4"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
 
         <EditText
             android:id="@+id/txtAutor"
-            android:layout_width="150dip"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="textCapWords"
-            android:maxLength="20"
+            android:maxLength="30"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:padding="5dip" />
     </TableRow>
 	

@@ -41,4 +41,17 @@ class Prestamo {
 	def getContactoMail() {
 		contacto.email
 	}	
+	
+	def prestar() {
+		if (libro == null) {
+			throw new BusinessException("Debe ingresar libro")
+		}
+		if (contacto == null) {
+			throw new 
+			BusinessException("Debe ingresar contacto")
+		}
+		fechaPrestamo = new Date
+		libro.prestar
+	}
+	
 }

@@ -61,5 +61,9 @@ class MemoryBasedHomeLibros implements HomeLibros {
 	override eliminarLibros() {
 		libros.clear
 	}
+	
+	override getLibrosPrestables() {
+		libros.filter [ libro | libro.estaDisponible ].toList
+	}
 
 }
