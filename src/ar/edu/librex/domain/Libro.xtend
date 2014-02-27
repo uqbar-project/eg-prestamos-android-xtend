@@ -28,6 +28,10 @@ class Libro {
 	def prestar() {
 		prestado = true
 	}
+
+	def devolver() {
+		prestado = false
+	}
 	
 	def estaPrestado() {
 		prestado
@@ -35,10 +39,6 @@ class Libro {
 
 	def estaDisponible() {
 		!prestado
-	}
-	
-	def devolver() {
-		prestado = false
 	}
 	
 }

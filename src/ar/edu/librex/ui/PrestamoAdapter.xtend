@@ -47,14 +47,7 @@ class PrestamoAdapter extends BaseAdapter {
 		lblPrestamo.text = prestamo.datosPrestamo
 		val fotoContacto = prestamo.contacto.foto
 		val bm = BitmapFactory.decodeByteArray(fotoContacto, 0, fotoContacto.length)
-
-		//val dm = new DisplayMetrics
-		//getWindowManager().defaultDisplay.getMetrics(dm)
-		//imgContacto.setMinimumHeight(dm.heightPixels)
-		//imgContacto.setMinimumWidth(dm.widthPixels)
 		imgContacto.imageBitmap = bm
-
-		// fin nuevo 
 		row
 	}
 
