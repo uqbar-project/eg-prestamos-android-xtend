@@ -1,12 +1,15 @@
 package ar.edu.librex.domain
 
+import org.eclipse.xtend.lib.annotations.Accessors
+
+@Accessors
 class Contacto {
 
-	@Property String id
-	@Property String nombre
-	@Property String numero
-	@Property String email  
-	@Property byte[] foto
+	String id
+	String nombre
+	String numero
+	String email  
+	byte[] foto
 	
 	new() {
 		

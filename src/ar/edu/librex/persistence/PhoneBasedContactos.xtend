@@ -11,15 +11,17 @@ import android.util.Log
 import ar.edu.librex.domain.Contacto
 import java.util.ArrayList
 import java.util.List
+import org.eclipse.xtend.lib.annotations.Accessors
 
 import static extension ar.edu.librex.util.ImageUtil.*
 
+@Accessors
 class PhoneBasedContactos implements HomeContactos {
 
 	/**
 	 * actividad (página) madre que permite hacer consultas sobre los contactos
 	 */
-	@Property Activity parentActivity
+	Activity parentActivity
 
 	new(Activity parent) {
 		parentActivity = parent

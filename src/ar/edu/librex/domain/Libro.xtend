@@ -1,10 +1,12 @@
 package ar.edu.librex.domain
 
-class Libro {
+import org.eclipse.xtend.lib.annotations.Accessors
+
+@Accessors class Libro {
 	
-	@Property Long id
-	@Property String titulo
-	@Property String autor
+	Long id
+	String titulo
+	String autor
 	boolean prestado
 	
 	new() {

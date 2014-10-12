@@ -11,4 +11,4 @@ interface HomeContactos {
 	def Contacto getContacto(Contacto contactoOrigen)
 	def void eliminarContactos()
 
-}
+} 

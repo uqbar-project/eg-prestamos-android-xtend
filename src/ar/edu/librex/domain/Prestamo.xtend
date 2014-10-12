@@ -2,14 +2,15 @@ package ar.edu.librex.domain
 
 import java.text.SimpleDateFormat
 import java.util.Date
+import org.eclipse.xtend.lib.annotations.Accessors
 
-class Prestamo {
+@Accessors class Prestamo {
 	
-	@Property Long id
-	@Property Date fechaPrestamo
-	@Property Date fechaDevolucion
-	@Property Contacto contacto
-	@Property Libro libro
+	Long id
+	Date fechaPrestamo
+	Date fechaDevolucion
+	Contacto contacto
+	Libro libro
 	
 	new() {
 		
