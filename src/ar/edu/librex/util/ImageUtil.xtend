@@ -11,6 +11,8 @@ import java.io.InputStream
 
 class ImageUtil {
 
+	static String DEFAULT_CONTACT_URI = "defaultContact.png"
+	
 	/**
 	 * Si la imagen es de un proyecto debe estar en el directorio assets (o bien un directorio ubicable)
 	 */
@@ -30,7 +32,10 @@ class ImageUtil {
 	 * Si la imagen es de un proyecto debe estar en el directorio assets (o bien un directorio ubicable)
 	 */
 	def static byte[] convertToImage(Activity activity, Uri uri) {
-		val fotoStream = ContactsContract.Contacts.openContactPhotoInputStream(activity.contentResolver, uri)
+		var fotoStream = ContactsContract.Contacts.openContactPhotoInputStream(activity.contentResolver, uri)
+		if (fotoStream == null) {
+			return activity.convertToImage(DEFAULT_CONTACT_URI)
+		}
 		val inputFoto = new BufferedInputStream(fotoStream)
 		convertToByteArray(inputFoto)
 	}	

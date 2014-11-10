@@ -180,6 +180,7 @@ class PhoneBasedRepoContactos implements RepoContactos {
 			email = cursorMail.getDataAsString(ContactsContract.CommonDataKinds.Email.ADDRESS)
 		}
 		val uriFoto = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long.parseLong(contactId))
+		Log.w("Librex", "uriFoto: " + uriFoto)
 		foto = parentActivity.convertToImage(uriFoto)
 		new Contacto(contactId, contactNumber, contactName, email, foto)
 	}
