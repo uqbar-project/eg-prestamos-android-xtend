@@ -7,7 +7,6 @@ import android.database.Cursor
 import android.net.Uri
 import android.provider.ContactsContract
 import android.provider.ContactsContract.PhoneLookup
-import android.util.Log
 import ar.edu.librex.domain.Contacto
 import java.util.ArrayList
 import java.util.List
@@ -32,10 +31,7 @@ class PhoneBasedRepoContactos implements RepoContactos {
 	 */
 	override void addContactoSiNoExiste(Contacto contacto) {
 		if (this.getContacto(contacto) == null) {
-			Log.w("librex", "No existe contacto " + contacto + ".Se crea")
 			this.addContacto(contacto)
-		} else {
-			Log.w("librex", "Ya existe contacto " + contacto + ".")
 		}
 	}
 	 
@@ -119,7 +115,6 @@ class PhoneBasedRepoContactos implements RepoContactos {
 			
 		var cursorContactos = parentActivity.contentResolver.query(lookupUri, null, null, null, null)
 		if (cursorContactos == null || cursorContactos.count < 1) {
-			Log.w("librex", "No encontrado")
 			return null
 		}
 		
@@ -169,6 +164,7 @@ class PhoneBasedRepoContactos implements RepoContactos {
 		var String contactNumber = null
 		var byte[] foto = null
 		var email = "" // TODO: Agregarlo
+		
 		if (cursorContactos.getDataAsString(ContactsContract.Contacts.HAS_PHONE_NUMBER).equals("1")) {
 			val cursorTelefono = parentActivity.contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?", #[contactId], null)
 			if (cursorTelefono.moveToNext) {
@@ -179,9 +175,8 @@ class PhoneBasedRepoContactos implements RepoContactos {
 		if (cursorMail.moveToNext) {
 			email = cursorMail.getDataAsString(ContactsContract.CommonDataKinds.Email.ADDRESS)
 		}
-		val uriFoto = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long.parseLong(contactId))
-		Log.w("Librex", "uriFoto: " + uriFoto)
-		foto = parentActivity.convertToImage(uriFoto)
+		val uriContacto = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long.parseLong(contactId))
+		foto = parentActivity.convertToImage(uriContacto)
 		new Contacto(contactId, contactNumber, contactName, email, foto)
 	}
 	

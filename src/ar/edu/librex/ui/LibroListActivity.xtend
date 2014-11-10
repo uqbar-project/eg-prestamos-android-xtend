@@ -55,7 +55,6 @@ class LibroListActivity extends FragmentActivity implements Callbacks {
 	 * Callback method from {@link LibroListFragment.Callbacks} indicating that
 	 * the item with the given ID was selected.
 	 */
-	//override def onItemSelected(String id) {
 	override def onItemSelected(Libro libro) {
 		if(mTwoPane) {
 			// In two-pane mode, show the detail view in this activity by

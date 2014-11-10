@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.provider.ContactsContract
+import android.util.Log
 import java.io.BufferedInputStream
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
@@ -34,6 +35,7 @@ class ImageUtil {
 	def static byte[] convertToImage(Activity activity, Uri uri) {
 		var fotoStream = ContactsContract.Contacts.openContactPhotoInputStream(activity.contentResolver, uri)
 		if (fotoStream == null) {
+			Log.w("Librex", "Esta URI no fue encontrada: " + uri)
 			return activity.convertToImage(DEFAULT_CONTACT_URI)
 		}
 		val inputFoto = new BufferedInputStream(fotoStream)

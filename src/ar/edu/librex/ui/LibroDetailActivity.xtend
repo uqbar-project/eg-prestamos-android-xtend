@@ -39,7 +39,7 @@ class LibroDetailActivity extends FragmentActivity {
 			}
 			arguments.putBoolean(LibroDetailFragment.EDITABLE, intent.getBooleanExtra(LibroDetailFragment.EDITABLE, false))
 			val fragment = new LibroDetailFragment
-			fragment.setArguments(arguments)
+			fragment.arguments = arguments
 			supportFragmentManager.beginTransaction().add(R.id.libro_detail_container, fragment).commit()
 		}
 	}
