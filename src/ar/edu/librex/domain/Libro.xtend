@@ -1,8 +1,9 @@
 package ar.edu.librex.domain
 
+import java.io.Serializable
 import org.eclipse.xtend.lib.annotations.Accessors
 
-@Accessors class Libro {
+@Accessors class Libro implements Serializable {
 	
 	Long id
 	String titulo

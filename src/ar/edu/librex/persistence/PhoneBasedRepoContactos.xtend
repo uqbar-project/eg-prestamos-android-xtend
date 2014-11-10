@@ -16,7 +16,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import static extension ar.edu.librex.util.ImageUtil.*
 
 @Accessors
-class PhoneBasedContactos implements HomeContactos {
+class PhoneBasedRepoContactos implements RepoContactos {
 
 	/**
 	 * actividad (página) madre que permite hacer consultas sobre los contactos
@@ -47,22 +47,6 @@ class PhoneBasedContactos implements HomeContactos {
 		val String tipoCuenta = null
 		val String nombreCuenta = null
 
-		/**
-		 * INSERT DE A UNO 
-		val newContact = new ContentValues
-		newContact.put(RawContacts.ACCOUNT_TYPE, tipoCuenta)
-		newContact.put(RawContacts.ACCOUNT_NAME, nombreCuenta)
-		val uriContactId = parentActivity.contentResolver.insert(RawContacts.CONTENT_URI, newContact)
-		val contactId = ContentUris.parseId(uriContactId)
-		newContact.clear
-		newContact.put(ContactsContract.Data.RAW_CONTACT_ID, contactId)
-		newContact.put(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
-		//newContact.put(StructuredName.DISPLAY_NAME, contacto.nombre)
-		newContact.put(ContactsContract.CommonDataKinds.Phone.LABEL, contacto.nombre)
-		newContact.put(ContactsContract.CommonDataKinds.Phone.NUMBER, contacto.numero)
-		newContact.put(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_HOME)
-		parentActivity.contentResolver.insert(ContactsContract.Data.CONTENT_URI, newContact)
-		**/
 		/** O CON BUILDERS */
 		val comandosAgregar = new ArrayList<ContentProviderOperation>
 		comandosAgregar.add(ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI)

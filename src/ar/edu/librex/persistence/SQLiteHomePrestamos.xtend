@@ -11,7 +11,7 @@ import java.util.ArrayList
 import static extension ar.edu.librex.config.LibrexConfig.*
 import static extension ar.edu.librex.util.DateUtil.*
 
-class SQLiteHomePrestamos implements HomePrestamos {
+class SQLiteHomePrestamos implements RepoPrestamos {
 
 	public static String TABLA_PRESTAMOS = "Prestamos"
 	public static String[] CAMPOS_PRESTAMO = #["id, fecha, fecha_devolucion, contacto_phone, libro_id"]

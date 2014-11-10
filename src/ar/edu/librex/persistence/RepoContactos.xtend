@@ -3,7 +3,7 @@ package ar.edu.librex.persistence
 import ar.edu.librex.domain.Contacto
 import java.util.List
 
-interface HomeContactos {
+interface RepoContactos {
 
 	def void addContactoSiNoExiste(Contacto contacto)
 	def void addContacto(Contacto contacto) 

@@ -33,11 +33,9 @@ class LibroDetailActivity extends FragmentActivity {
 		// http://developer.android.com/guide/components/fragments.html
 		//
 		if(savedInstanceState == null) {
-			// Create the detail fragment and add it to the activity
-			// using a fragment transaction.
 			val arguments = new Bundle
-			if (intent.getStringExtra(LibroDetailFragment.ARG_ITEM_ID) != null) {
-				arguments.putString(LibroDetailFragment.ARG_ITEM_ID, intent.getStringExtra(LibroDetailFragment.ARG_ITEM_ID))
+			if (intent.getSerializableExtra(LibroDetailFragment.ARG_ITEM) != null) {
+				arguments.putSerializable(LibroDetailFragment.ARG_ITEM, intent.getSerializableExtra(LibroDetailFragment.ARG_ITEM))
 			}
 			arguments.putBoolean(LibroDetailFragment.EDITABLE, intent.getBooleanExtra(LibroDetailFragment.EDITABLE, false))
 			val fragment = new LibroDetailFragment

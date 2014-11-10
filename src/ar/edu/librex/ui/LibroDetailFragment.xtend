@@ -2,7 +2,6 @@ package ar.edu.librex.ui
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +17,7 @@ import static extension ar.edu.librex.config.LibrexConfig.*
  * {@link LibroDetailActivity} on handsets.
  */
 class LibroDetailFragment extends Fragment {
-	public static final String ARG_ITEM_ID = "item_id"
+	public static final String ARG_ITEM = "libro"
 	public static final String EDITABLE = "editable"
 
 	private Libro libro
@@ -36,11 +35,9 @@ class LibroDetailFragment extends Fragment {
 
 	override onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState)
-		actualiza = arguments.containsKey(ARG_ITEM_ID) && arguments.getString(ARG_ITEM_ID) != null
+		actualiza = getArgument(ARG_ITEM)
 		if (actualiza) {
-			posicion = new Integer(arguments.getString(ARG_ITEM_ID)).intValue
-			Log.w("Librex", "Posicion: " + posicion)
-			libro = activity.homeLibros.getLibro(posicion)
+			libro = arguments.getSerializable(ARG_ITEM) as Libro
 		} else {
 			libro = new Libro
 		}
@@ -86,5 +83,9 @@ class LibroDetailFragment extends Fragment {
 		homeLibros.addLibro(libro)
 		activity.finish()
 	}	
+
+	def getArgument(String key) {
+		arguments.containsKey(key) && arguments.getSerializable(key) != null
+	}
 
 }

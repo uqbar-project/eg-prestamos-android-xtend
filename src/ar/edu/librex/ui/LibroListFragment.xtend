@@ -4,7 +4,6 @@ import android.R
 import android.app.Activity
 import android.os.Bundle
 import android.support.v4.app.ListFragment
-import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.ListView
@@ -45,9 +44,10 @@ class LibroListFragment extends ListFragment {
 	 * A dummy implementation of the {@link Callbacks} interface that does
 	 * nothing. Used only when this fragment is not attached to an activity.
 	 */
-	private static val sDummyCallbacks = [ String param | ] as Callbacks 
+	//private static val sDummyCallbacks = [ String param | ] as Callbacks 
+	private static val sDummyCallbacks = [ Libro param | ] as Callbacks
 
-	List<Long> idLibros
+	List<Libro> libros
 	
 	override def onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState)
@@ -62,9 +62,7 @@ class LibroListFragment extends ListFragment {
 
 	/** Método nuevo que creamos para compartir en el onCreate y en el onResume */
 	def void refrescarLibros() {
-		val libros = activity.homeLibros.libros
-		// colección paralela que guarda los ids
-		idLibros = libros.map [ libro | libro.id ]
+		libros = activity.homeLibros.libros
 		listAdapter = new ArrayAdapter<Libro>(activity, R.layout.simple_list_item_activated_1, R.id.text1, libros)
 	}
 	
@@ -79,7 +77,6 @@ class LibroListFragment extends ListFragment {
 
 	override def onAttach(Activity activity) {
 		super.onAttach(activity)
-		Log.w("Librex", "onAttach de LibroListFragment")
 	
 		// Activities containing this fragment must implement its callbacks.
 		if(!(activity instanceof Callbacks)) {
@@ -101,9 +98,7 @@ class LibroListFragment extends ListFragment {
 	
 		// Notify the active callbacks interface (the activity, if the
 		// fragment is attached to one) that an item has been selected.
-		val idLibro = idLibros.get(position)
-		Log.w("Librex", "el id:" + id + " y el selectedItem: " + idLibro)
-		mCallbacks.onItemSelected("" + idLibro)
+		mCallbacks.onItemSelected(libros.get(position))
 	}
 
 	override def onSaveInstanceState(Bundle outState) {

@@ -1,9 +1,9 @@
 package ar.edu.librex.config
 
 import android.app.Activity
-import ar.edu.librex.persistence.PhoneBasedContactos
 import ar.edu.librex.persistence.SQLiteHomeLibros
 import ar.edu.librex.persistence.SQLiteHomePrestamos
+import ar.edu.librex.persistence.PhoneBasedRepoContactos
 
 class LibrexConfig {
 	
@@ -22,7 +22,7 @@ class LibrexConfig {
 	}
 	
 	def static getHomeContactos(Activity activity) {
-		new PhoneBasedContactos(activity)
+		new PhoneBasedRepoContactos(activity)
 	}
 	
 }

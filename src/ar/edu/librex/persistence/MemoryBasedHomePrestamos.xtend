@@ -4,14 +4,14 @@ import ar.edu.librex.domain.Prestamo
 import java.util.ArrayList
 import java.util.List
 
-class MemoryBasedHomePrestamos implements HomePrestamos {
+class MemoryBasedHomePrestamos implements RepoPrestamos {
 
 	/**
 	 * ******************************************************************************
 	 *   IMPLEMENTACION DEL SINGLETON 
 	 * ****************************************************************************** 
 	 */
-	static HomePrestamos instance
+	static RepoPrestamos instance
 	
 	static def getInstance() {
 		if (instance == null) {

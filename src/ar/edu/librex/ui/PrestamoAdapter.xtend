@@ -43,7 +43,7 @@ class PrestamoAdapter extends BaseAdapter {
 		val lblLibro = row.findViewById(R.id.txtLibro) as TextView
 		val lblPrestamo = row.findViewById(R.id.txtPrestamo) as TextView
 		val imgContacto = row.findViewById(R.id.imgContacto) as ImageView
-		lblLibro.text = prestamo.libro.toString
+		lblLibro.text = prestamo.libro.titulo
 		lblPrestamo.text = prestamo.datosPrestamo
 		val fotoContacto = prestamo.contacto.foto
 		val bm = BitmapFactory.decodeByteArray(fotoContacto, 0, fotoContacto.length)

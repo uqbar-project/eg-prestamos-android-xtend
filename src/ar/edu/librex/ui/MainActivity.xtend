@@ -15,13 +15,13 @@ import android.widget.ListView
 import ar.edu.librex.domain.Contacto
 import ar.edu.librex.domain.Libro
 import ar.edu.librex.domain.Prestamo
-import ar.edu.librex.persistence.HomeContactos
 import ar.edu.librex.persistence.HomeLibros
-import ar.edu.librex.persistence.PhoneBasedContactos
 import java.net.URLEncoder
 
 import static extension ar.edu.librex.config.LibrexConfig.*
 import static extension ar.edu.librex.util.ImageUtil.*
+import ar.edu.librex.persistence.RepoContactos
+import ar.edu.librex.persistence.PhoneBasedRepoContactos
 
 class MainActivity extends Activity implements ActionMode.Callback {
 
@@ -45,7 +45,7 @@ class MainActivity extends Activity implements ActionMode.Callback {
 	 * inicializamos la información de la aplicación
 	 */
 	def initialize() {
-		val HomeContactos homeContactos = new PhoneBasedContactos(this)
+		val RepoContactos homeContactos = new PhoneBasedRepoContactos(this)
 		homeContactos.addContactoSiNoExiste(
 			new Contacto("1", "46425829", "Paula Elffman", "disenia_dora@gmail.com", this.convertToImage("kiarush.png")))
 		homeContactos.addContactoSiNoExiste(
@@ -110,14 +110,14 @@ class MainActivity extends Activity implements ActionMode.Callback {
 	}
 
 	def llenarPrestamosPendientes() {
-		val lv = findViewById(R.id.lvPrestamos) as ListView
+		val lvPrestamos = findViewById(R.id.lvPrestamos) as ListView
 		val prestamoAdapter = new PrestamoAdapter(this, homePrestamos.prestamosPendientes)
-		lv.adapter = prestamoAdapter
-		lv.choiceMode = ListView.CHOICE_MODE_SINGLE
+		lvPrestamos.adapter = prestamoAdapter
+		lvPrestamos.choiceMode = ListView.CHOICE_MODE_SINGLE
 
 		// lv.multiChoiceModeListener = new PrestamoModeListener(this)
-		lv.longClickable = true
-		lv.onItemLongClickListener = [ AdapterView<?> parent, View view, int position, long id |
+		lvPrestamos.longClickable = true
+		lvPrestamos.onItemLongClickListener = [ AdapterView<?> parent, View view, int position, long id |
 			if (mActionMode != null) {
 				return false
 			}
@@ -126,7 +126,7 @@ class MainActivity extends Activity implements ActionMode.Callback {
 			view.selected = true
 			true
 		] as OnItemLongClickListener
-		registerForContextMenu(lv)
+		registerForContextMenu(lvPrestamos)
 	}
 
 	override def onCreateActionMode(ActionMode mode, Menu menu) {
@@ -148,7 +148,12 @@ class MainActivity extends Activity implements ActionMode.Callback {
 	def boolean llamar(String telefono) {
 		val callIntent = new Intent(Intent.ACTION_CALL)
 		callIntent.setData(Uri.parse("tel:" + telefono))
-		startActivity(callIntent)
+		try {
+			Log.w("Voy a llamar", "CHAU")
+			startActivity(callIntent)
+		} catch (Exception e) {
+			Log.e("ERROR PUTO", e.message)
+		}
 		true
 	}
 
