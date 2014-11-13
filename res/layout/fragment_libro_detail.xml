@@ -33,6 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="textCapWords"
+            android:ems="300"
             android:maxLength="100"
             android:textAppearance="?android:attr/textAppearanceMediumInverse"
             android:textColor="#C0C0C0" />
@@ -63,6 +64,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="textCapWords"
+            android:ems="300"
             android:maxLength="30"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:padding="5dip" />

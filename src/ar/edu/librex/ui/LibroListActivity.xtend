@@ -81,18 +81,17 @@ class LibroListActivity extends FragmentActivity implements Callbacks {
 	}
 
 	def nuevoLibro() {
+		val libro = new Libro
 		if(mTwoPane) {
-			detalleLibroTwoPanes(null, true)
+			detalleLibroTwoPanes(libro, true)
 		} else {
-			detalleLibroOnePane(null, true)
+			detalleLibroOnePane(libro, true)
 		}
 	}
 	
 	def detalleLibroTwoPanes(Libro libro, boolean editable) {
 		val arguments = new Bundle
-		if(libro.id != null) {
-			arguments.putSerializable(LibroDetailFragment.ARG_ITEM, libro as Serializable)
-		}
+		arguments.putSerializable(LibroDetailFragment.ARG_ITEM, libro as Serializable)
 		arguments.putBoolean(LibroDetailFragment.EDITABLE, editable)
 		val fragment = new LibroDetailFragment
 		fragment.arguments = arguments
@@ -101,9 +100,7 @@ class LibroListActivity extends FragmentActivity implements Callbacks {
 
 	def detalleLibroOnePane(Libro libro, boolean editable) {
 		val detailIntent = new Intent(this, typeof(LibroDetailActivity))
-		if (libro.id != null) {
-			detailIntent.putExtra(LibroDetailFragment.ARG_ITEM, libro)
-		}
+		detailIntent.putExtra(LibroDetailFragment.ARG_ITEM, libro)
 		detailIntent.putExtra(LibroDetailFragment.EDITABLE, editable)
 		startActivity(detailIntent)
 	}

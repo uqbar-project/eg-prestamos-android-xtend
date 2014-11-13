@@ -16,12 +16,12 @@ import ar.edu.librex.domain.Contacto
 import ar.edu.librex.domain.Libro
 import ar.edu.librex.domain.Prestamo
 import ar.edu.librex.persistence.HomeLibros
+import ar.edu.librex.persistence.PhoneBasedRepoContactos
+import ar.edu.librex.persistence.RepoContactos
 import java.net.URLEncoder
 
 import static extension ar.edu.librex.config.LibrexConfig.*
 import static extension ar.edu.librex.util.ImageUtil.*
-import ar.edu.librex.persistence.RepoContactos
-import ar.edu.librex.persistence.PhoneBasedRepoContactos
 
 class MainActivity extends Activity implements ActionMode.Callback {
 
@@ -105,7 +105,7 @@ class MainActivity extends Activity implements ActionMode.Callback {
 
 	def void navigate(Class<?> classActivity) {
 		val intent = new Intent(this, classActivity)
-		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+		intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
 		startActivity(intent)
 	}
 

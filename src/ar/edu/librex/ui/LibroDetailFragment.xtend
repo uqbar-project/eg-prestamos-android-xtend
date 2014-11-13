@@ -22,8 +22,6 @@ class LibroDetailFragment extends Fragment {
 
 	private Libro libro
 	private boolean editable
-	private boolean actualiza
-	private int posicion = 0
 
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -35,12 +33,7 @@ class LibroDetailFragment extends Fragment {
 
 	override onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState)
-		actualiza = getArgument(ARG_ITEM)
-		if (actualiza) {
-			libro = arguments.getSerializable(ARG_ITEM) as Libro
-		} else {
-			libro = new Libro
-		}
+		libro = arguments.getSerializable(ARG_ITEM) as Libro
 		editable = arguments.getBoolean(EDITABLE)
 	}
 
@@ -77,8 +70,8 @@ class LibroDetailFragment extends Fragment {
 		libro.titulo = txtTitulo.text.toString
 		libro.autor = txtAutor.text.toString
 		val homeLibros = activity.homeLibros
-		if (actualiza) {
-			homeLibros.removeLibro(posicion)
+		if (libro.id != null) {
+			homeLibros.removeLibro(libro)
 		} 
 		homeLibros.addLibro(libro)
 		activity.finish()
