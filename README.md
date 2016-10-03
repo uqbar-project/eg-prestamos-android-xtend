@@ -8,7 +8,7 @@ El proyecto está armado con
 
 * Eclipse Kepler
 * Xtend 2.7.2
-* Android SDK 21
+* Android SDK 19
 
 ## Conceptos que se ven
 
